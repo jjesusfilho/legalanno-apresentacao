@@ -122,9 +122,15 @@
       margin-right: 0; 
     }
   </style>
-  <script src="apresentacao_files/libs/quarto-diagram/mermaid.min.js"></script>
-  <script src="apresentacao_files/libs/quarto-diagram/mermaid-init.js"></script>
-  <link href="apresentacao_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
+  <style>
+  .flow { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-top: 1rem; }
+  .flow-row { display: flex; align-items: center; justify-content: center; gap: 0.6rem; flex-wrap: nowrap; }
+  .flow-box { background: #EEF3FB; border: 1.5px solid #A9C2E4; border-radius: 8px; padding: 0.8rem 1.1rem; color: #1E4C8A; font-weight: 600; text-align: center; line-height: 1.28; min-width: 13rem; font-size: 0.8em; }
+  .flow-arrow { color: #98A4B3; font-size: 1.5rem; line-height: 1; }
+  .flow-connector { display: flex; align-items: center; gap: 0.5rem; color: #B0522E; font-weight: 700; margin: 0.15rem 0; }
+  .flow-connector-arrow { font-size: 1.3rem; line-height: 1; }
+  .flow-connector-label { font-size: 0.85em; letter-spacing: 0.03em; text-transform: uppercase; }
+  </style>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -175,34 +181,48 @@ José de Jesus Filho
 </section>
 <section id="visão-geral-do-fluxo" class="slide level2 center">
 <h2>Visão geral do fluxo</h2>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">%%{init: {'theme': 'default', 'themeVariables': {'fontSize': '30px'}}}%%
-flowchart LR
-    A["Projeto +&lt;br/&gt;questionário"] --&gt; B["Atribuição de&lt;br/&gt;documentos"] --&gt; C["Anotação&lt;br/&gt;(múltiplos anotadores)"] --&gt; D["Cálculo de IAA&lt;br/&gt;por questão"]
-</pre>
+<div class="flow">
+<div class="flow-row">
+<div class="flow-box">
+Projeto +<br>questionário
 </div>
-<p></p></figure><p></p>
+<div class="flow-arrow">
+→
+</div>
+<div class="flow-box">
+Atribuição de<br>documentos
+</div>
+<div class="flow-arrow">
+→
+</div>
+<div class="flow-box">
+Anotação<br>2+ anotadores
+</div>
+<div class="flow-arrow">
+→
+</div>
+<div class="flow-box">
+Cálculo de IAA<br>por questão
 </div>
 </div>
+<div class="flow-connector">
+<span class="flow-connector-arrow">↓</span><span class="flow-connector-label">divergência</span>
 </div>
-<div style="text-align:center; font-size: 1.6em; margin: 0.2em 0;">
-<p>⬇ divergência</p>
+<div class="flow-row">
+<div class="flow-box">
+Fila de<br>adjudicação
 </div>
-<div class="cell" data-reveal="true" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">%%{init: {'theme': 'default', 'themeVariables': {'fontSize': '30px'}}}%%
-flowchart LR
-    E["Fila de&lt;br/&gt;adjudicação"] --&gt; F["Gold label"] --&gt; G["Avaliação&lt;br/&gt;de LLM"]
-</pre>
+<div class="flow-arrow">
+→
 </div>
-<p></p></figure><p></p>
+<div class="flow-box">
+Gold label
+</div>
+<div class="flow-arrow">
+→
+</div>
+<div class="flow-box">
+Avaliação<br>de LLM
 </div>
 </div>
 </div>
