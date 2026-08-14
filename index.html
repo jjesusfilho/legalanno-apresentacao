@@ -173,20 +173,33 @@ José de Jesus Filho
 <li>Avaliar um LLM exige comparar contra esse gold label, com margem de erro explícita</li>
 </ul>
 </section>
-<section id="visão-geral-do-fluxo" class="slide level2">
+<section id="visão-geral-do-fluxo" class="slide level2 center">
 <h2>Visão geral do fluxo</h2>
-<div class="cell" data-reveal="true" data-fig-width="9" data-layout-align="default">
+<div class="cell" data-reveal="true" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class=""><p></p>
 <div>
-<pre class="mermaid mermaid-js">flowchart LR
-    A["Projeto +\nquestionário"] --&gt; B["Atribuição de\ndocumentos"]
-    B --&gt; C["Anotação\n(múltiplos anotadores)"]
-    C --&gt; D["Cálculo de IAA\npor questão"]
-    D --&gt;|"divergência"| E["Fila de\nadjudicação"]
-    E --&gt; F["Gold label"]
-    F --&gt; G["Avaliação\nde LLM"]
+<pre class="mermaid mermaid-js">%%{init: {'theme': 'default', 'themeVariables': {'fontSize': '30px'}}}%%
+flowchart LR
+    A["Projeto +&lt;br/&gt;questionário"] --&gt; B["Atribuição de&lt;br/&gt;documentos"] --&gt; C["Anotação&lt;br/&gt;(múltiplos anotadores)"] --&gt; D["Cálculo de IAA&lt;br/&gt;por questão"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div style="text-align:center; font-size: 1.6em; margin: 0.2em 0;">
+<p>⬇ divergência</p>
+</div>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">%%{init: {'theme': 'default', 'themeVariables': {'fontSize': '30px'}}}%%
+flowchart LR
+    E["Fila de&lt;br/&gt;adjudicação"] --&gt; F["Gold label"] --&gt; G["Avaliação&lt;br/&gt;de LLM"]
 </pre>
 </div>
 <p></p></figure><p></p>
