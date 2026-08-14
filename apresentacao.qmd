@@ -40,17 +40,22 @@ format:
 - Divergências precisam virar decisão (gold label), não ficar sem solução
 - Avaliar um LLM exige comparar contra esse gold label, com margem de erro explícita
 
-## Visão geral do fluxo
+## Visão geral do fluxo {.center}
 
 ```{mermaid}
-%%| fig-width: 9
+%%{init: {'theme': 'default', 'themeVariables': {'fontSize': '30px'}}}%%
 flowchart LR
-    A["Projeto +\nquestionário"] --> B["Atribuição de\ndocumentos"]
-    B --> C["Anotação\n(múltiplos anotadores)"]
-    C --> D["Cálculo de IAA\npor questão"]
-    D -->|"divergência"| E["Fila de\nadjudicação"]
-    E --> F["Gold label"]
-    F --> G["Avaliação\nde LLM"]
+    A["Projeto +<br/>questionário"] --> B["Atribuição de<br/>documentos"] --> C["Anotação<br/>(múltiplos anotadores)"] --> D["Cálculo de IAA<br/>por questão"]
+```
+
+::: {style="text-align:center; font-size: 1.6em; margin: 0.2em 0;"}
+⬇ divergência
+:::
+
+```{mermaid}
+%%{init: {'theme': 'default', 'themeVariables': {'fontSize': '30px'}}}%%
+flowchart LR
+    E["Fila de<br/>adjudicação"] --> F["Gold label"] --> G["Avaliação<br/>de LLM"]
 ```
 
 ## Fundamentação teórica — concordância nominal
