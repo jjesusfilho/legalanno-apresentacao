@@ -12,9 +12,18 @@ format:
     slide-number: true
     transition: fade
     incremental: false
+    scrollable: true
     logo: ""
     footer: "LegalAnno — MPSP/FDRP-USP"
 ---
+
+## Acesse esta apresentação
+
+::: {style="text-align: center;"}
+![](images/qrcode.png){width="40%"}
+
+`https://jjesusfilho.github.io/legalanno-apresentacao/`
+:::
 
 ## Motivação
 
@@ -135,11 +144,3 @@ Aroyo & Welty (2015), *"Truth is a lie: crowd truth and the seven myths of human
 - Shrout, P. E., & Fleiss, J. L. (1979). Intraclass correlations: uses in assessing rater reliability. *Psychological Bulletin*, 86(2), 420–428.
 - Landis, J. R., & Koch, G. G. (1977). The measurement of observer agreement for categorical data. *Biometrics*, 33(1), 159–174.
 - Aroyo, L., & Welty, C. (2015). Truth is a lie: crowd truth and the seven myths of human annotation. *AI Magazine*, 36(1), 15–24.
-
-## Acesse esta apresentação
-
-::: {style="text-align: center;"}
-![](images/qrcode.png){width="40%"}
-
-`https://jjesusfilho.github.io/legalanno-apresentacao/`
-:::
