@@ -160,6 +160,7 @@ Aroyo & Welty (2015), *"Truth is a lie: crowd truth and the seven myths of human
 ## Referências
 
 - Artstein, R., & Poesio, M. (2008). Inter-coder agreement for computational linguistics. *Computational Linguistics*, 34(4), 555–596.
+- Artstein, R. (2017). Inter-annotator agreement. In N. Ide & J. Pustejovsky (Eds.), *Handbook of Linguistic Annotation* (pp. 297–313). Springer.
 - Passonneau, R. (2006). Measuring agreement on set-valued items (MASI) for semantic and pragmatic annotation.
 - Shrout, P. E., & Fleiss, J. L. (1979). Intraclass correlations: uses in assessing rater reliability. *Psychological Bulletin*, 86(2), 420–428.
 - Landis, J. R., & Koch, G. G. (1977). The measurement of observer agreement for categorical data. *Biometrics*, 33(1), 159–174.
