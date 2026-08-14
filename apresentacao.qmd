@@ -1,0 +1,145 @@
+---
+title: "LegalAnno"
+subtitle: "Concordância entre anotadores e avaliação de LLMs em anotação de documentos jurídicos"
+author: "José de Jesus Filho"
+institute: "MPSP, FDRP-USP"
+date: 2026-08-14
+date-format: "DD/MM/YYYY"
+format:
+  revealjs:
+    output-file: index.html
+    theme: simple
+    slide-number: true
+    transition: fade
+    incremental: false
+    logo: ""
+    footer: "LegalAnno — MPSP/FDRP-USP"
+---
+
+## Motivação
+
+- Pesquisa empírica em direito depende de bases de dados anotadas a partir de textos processuais
+- Anotação manual em larga escala é cara, lenta e sujeita a variação entre anotadores
+- Modelos de linguagem (LLMs) prometem acelerar a extração de informação de processos, mas sua confiabilidade precisa ser medida, não presumida
+- Faltava uma ferramenta que unisse anotação humana, medição de concordância e avaliação de LLM num único fluxo
+
+## O desafio
+
+- Texto jurídico é denso e admite interpretação; divergência entre anotadores é esperada, não um defeito do processo
+- É preciso saber **quando** a divergência é ruído aceitável e **quando** exige revisão
+- Perguntas condicionais e seções repetíveis quebram o pareamento simples "um documento, uma resposta por anotador"
+- Divergências precisam virar decisão (gold label), não ficar sem solução
+- Avaliar um LLM exige comparar contra esse gold label, com margem de erro explícita
+
+## Visão geral do fluxo
+
+```{mermaid}
+%%| fig-width: 9
+flowchart LR
+    A["Projeto +\nquestionário"] --> B["Atribuição de\ndocumentos"]
+    B --> C["Anotação\n(múltiplos anotadores)"]
+    C --> D["Cálculo de IAA\npor questão"]
+    D -->|"divergência"| E["Fila de\nadjudicação"]
+    E --> F["Gold label"]
+    F --> G["Avaliação\nde LLM"]
+```
+
+## Fundamentação teórica — concordância nominal
+
+Referência: Artstein & Poesio (2008)
+
+- **Cohen's κ**: dois anotadores, corrige a concordância observada pela concordância esperada ao acaso
+- **Krippendorff's α**: generaliza para múltiplos anotadores e **dados ausentes** — essencial aqui, pois perguntas condicionais nem sempre são respondidas por todos
+- Ambas penalizam a concordância que aconteceria só por chance, não a concordância bruta
+
+## Fundamentação teórica — casos especiais
+
+- **Multichoice**: cada resposta é um *conjunto* de opções, não uma categoria única
+  - distância MASI (Passonneau, 2006) generaliza a distância nominal para conjuntos
+  - permite concordância parcial quando os conjuntos se sobrepõem sem serem idênticos
+- **Numérico**: ICC(3) (Shrout & Fleiss, 1979) e correlação de Pearson
+- **Texto livre**: não comparado automaticamente — fica fora do IAA
+
+## Interpretação dos coeficientes
+
+| Faixa | Classificação |
+|---|---|
+| ≥ 0,80 | boa |
+| ≥ 0,67 | moderada |
+| \< 0,67 | fraca |
+
+- n efetivo é contado por questão: só documentos com 2+ respostas entram no cálculo
+- Sem variação observada (todos concordam), o coeficiente é definido como concordância perfeita, e não indeterminado
+
+## Adjudicação
+
+- A fila reúne apenas questões com 2+ anotações concluídas **e** valores divergentes
+- Agrupada por processo: o adjudicador resolve um documento inteiro por vez
+- Regra de imparcialidade: quem anotou um documento não pode adjudicá-lo
+- O valor escolhido pelo adjudicador vira o gold label da questão naquele documento
+
+## Avaliação de LLMs como anotadores
+
+Extração em dois estágios, por questão:
+
+1. **Raciocínio livre** (cadeia de pensamento) sobre o texto do documento
+2. **Extração estruturada**, condicionada ao raciocínio da etapa anterior, retornando JSON por questão
+
+- Suporta múltiplos provedores (Anthropic, OpenAI, Azure OpenAI, Gemini)
+- Parsing tolerante a variações do rótulo da questão (prefixo numérico, pontuação, maiúsculas)
+
+## Métricas de avaliação do LLM
+
+Predição do LLM comparada ao gold label:
+
+- Categórica: acurácia, κ, sensibilidade/especificidade
+- Multichoice: similaridade de Jaccard, exact match, precisão/recall/F1
+- Numérica: MAE, RMSE, Pearson r, R²
+
+Intervalo de confiança de 95% combina duas fontes de incerteza:
+
+$$\text{erro padrão} = \sqrt{\text{var}_{\text{amostral}} + \text{var}_{\text{erro de extração do LLM}}}$$
+
+## Uma crítica: os sete mitos da anotação humana
+
+Aroyo & Welty (2015), *"Truth is a lie: crowd truth and the seven myths of human annotation"*
+
+- Tese central: não existe uma verdade única para tarefas de interpretação humana; divergência entre anotadores costuma ser sinal, não ruído a ser eliminado
+- Dois mitos atingem diretamente este protocolo:
+  - "Existe uma verdade": a adjudicação converte cada divergência num único gold label, descartando a distribuição de leituras que a originou
+  - "Divergência é ruim": classificar κ/α como bom, moderado ou fraco trata baixa concordância apenas como falha do processo, não como possível ambiguidade legítima do texto jurídico
+
+## Implicações para o protocolo do LegalAnno
+
+- Avaliar o LLM contra um único gold label pressupõe que esse valor é inequívoco (o mito de que um padrão-ouro basta); na prática, ele é a escolha de um adjudicador entre leituras já divergentes
+- O adjudicador imparcial (que não anotou o documento) reduz viés de confirmação, mas ainda produz um valor único onde talvez devesse existir uma distribuição
+- Caminhos possíveis: preservar as respostas originais mesmo após a adjudicação, tratar questões de alta divergência como categoria própria de análise, e reportar a divergência humana junto de qualquer avaliação de LLM, não apenas a acurácia contra o gold
+
+## Arquitetura técnica
+
+- Backend: Python 3.13, FastAPI, SQLAlchemy 2 assíncrono, Alembic, PostgreSQL 18
+- Frontend: React, TypeScript, Vite, Tailwind CSS
+- Cálculo de IAA e avaliação de LLM como serviços de domínio, independentes dos routers HTTP
+- Infraestrutura própria (VMs USP), sem dependência de provedor de nuvem
+
+## Limitações atuais e próximos passos
+
+- Perguntas de seções repetíveis ainda ficam fora do cálculo de IAA (v1)
+- Texto livre não tem métrica automática de concordância
+- Próximos passos: IAA para seções repetíveis, avaliação de custo por provedor de LLM, painel de acompanhamento longitudinal por projeto
+
+## Referências
+
+- Artstein, R., & Poesio, M. (2008). Inter-coder agreement for computational linguistics. *Computational Linguistics*, 34(4), 555–596.
+- Passonneau, R. (2006). Measuring agreement on set-valued items (MASI) for semantic and pragmatic annotation.
+- Shrout, P. E., & Fleiss, J. L. (1979). Intraclass correlations: uses in assessing rater reliability. *Psychological Bulletin*, 86(2), 420–428.
+- Landis, J. R., & Koch, G. G. (1977). The measurement of observer agreement for categorical data. *Biometrics*, 33(1), 159–174.
+- Aroyo, L., & Welty, C. (2015). Truth is a lie: crowd truth and the seven myths of human annotation. *AI Magazine*, 36(1), 15–24.
+
+## Acesse esta apresentação
+
+::: {style="text-align: center;"}
+![](images/qrcode.png){width="40%"}
+
+`https://jjesusfilho.github.io/legalanno-apresentacao/`
+:::
