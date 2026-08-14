@@ -15,6 +15,17 @@ format:
     scrollable: true
     logo: ""
     footer: "LegalAnno — MPSP/FDRP-USP"
+    include-in-header:
+      text: |
+        <style>
+        .flow { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-top: 1rem; }
+        .flow-row { display: flex; align-items: center; justify-content: center; gap: 0.6rem; flex-wrap: nowrap; }
+        .flow-box { background: #EEF3FB; border: 1.5px solid #A9C2E4; border-radius: 8px; padding: 0.8rem 1.1rem; color: #1E4C8A; font-weight: 600; text-align: center; line-height: 1.28; min-width: 13rem; font-size: 0.8em; }
+        .flow-arrow { color: #98A4B3; font-size: 1.5rem; line-height: 1; }
+        .flow-connector { display: flex; align-items: center; gap: 0.5rem; color: #B0522E; font-weight: 700; margin: 0.15rem 0; }
+        .flow-connector-arrow { font-size: 1.3rem; line-height: 1; }
+        .flow-connector-label { font-size: 0.85em; letter-spacing: 0.03em; text-transform: uppercase; }
+        </style>
 ---
 
 ## Acesse esta apresentação
@@ -42,21 +53,25 @@ format:
 
 ## Visão geral do fluxo {.center}
 
-```{mermaid}
-%%{init: {'theme': 'default', 'themeVariables': {'fontSize': '30px'}}}%%
-flowchart LR
-    A["Projeto +<br/>questionário"] --> B["Atribuição de<br/>documentos"] --> C["Anotação<br/>(múltiplos anotadores)"] --> D["Cálculo de IAA<br/>por questão"]
-```
-
-::: {style="text-align:center; font-size: 1.6em; margin: 0.2em 0;"}
-⬇ divergência
-:::
-
-```{mermaid}
-%%{init: {'theme': 'default', 'themeVariables': {'fontSize': '30px'}}}%%
-flowchart LR
-    E["Fila de<br/>adjudicação"] --> F["Gold label"] --> G["Avaliação<br/>de LLM"]
-```
+<div class="flow">
+<div class="flow-row">
+<div class="flow-box">Projeto +<br>questionário</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">Atribuição de<br>documentos</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">Anotação<br>2+ anotadores</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">Cálculo de IAA<br>por questão</div>
+</div>
+<div class="flow-connector"><span class="flow-connector-arrow">↓</span><span class="flow-connector-label">divergência</span></div>
+<div class="flow-row">
+<div class="flow-box">Fila de<br>adjudicação</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">Gold label</div>
+<div class="flow-arrow">→</div>
+<div class="flow-box">Avaliação<br>de LLM</div>
+</div>
+</div>
 
 ## Fundamentação teórica — concordância nominal
 
